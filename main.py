@@ -1,28 +1,39 @@
 import pygame
+import config
+import playerClass
 
-WIDTH, HEIGHT = 900, 500
-WINDOW =  pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Dodgeball")
 
-FPS = 60
+def Draw_Screen(player1, player2):
+    # draw window
+    config.WINDOW.blit(config.BACKGROUND, (0, 0))
+    pygame.draw.rect(config.WINDOW, config.BLACK, config.DIVIDER)
 
-def Draw_Window():
-    pass
+    # draw player
+    config.WINDOW.blit(player1.player, (player1.hitbox.x, player1.hitbox.y))
+    config.WINDOW.blit(player2.player, (player2.hitbox.x, player2.hitbox.y))
+
+
 
 def main():
-    clock = pygame.time.Clock()
+    config.init()       # initialize global variables
+    right_player = playerClass.Player('RIGHT')
+    left_player = playerClass.Player(player_section = 'LEFT')
+
+    clock = pygame.time.Clock()     # initialize clock
     run = True
 
+    # game loop
     while run:
-        clock.tick(FPS)
+        clock.tick(config.FPS)     # run clock   
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
         
-        Draw_Window()
+        Draw_Screen(left_player, right_player)
         pygame.display.update()
 
     pygame.QUIT
 
+# program only runs if main.py is run directly
 if __name__ == "__main__":
     main()
