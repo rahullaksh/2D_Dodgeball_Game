@@ -27,7 +27,13 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LSHIFT:
+                    left_player.Throw()
+                if event.key == pygame.K_RSHIFT:
+                    right_player.Throw()
+
+
         keys_pressed = pygame.key.get_pressed()
         right_player.Handle_Movement(keys_pressed)
         left_player.Handle_Movement(keys_pressed)

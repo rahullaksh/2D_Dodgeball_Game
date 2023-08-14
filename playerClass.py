@@ -6,6 +6,7 @@ class Player:
 
     def __init__(self, player_section = 'RIGHT' or 'LEFT'):
         self.player_section = player_section
+        self.balls = 3
 
         if (player_section == 'RIGHT'):
             RIGHT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'rightPlayer.png'))
@@ -56,3 +57,6 @@ class Player:
             if keys_pressed[pygame.K_RIGHT] and (self.hitbox.x + config.PLAYER_WIDTH +
                 config.PLAYER_VELOCITY < config.WIDTH):
                 self.Move_Right()
+
+    def Throw(self):
+        self.balls -= 1
