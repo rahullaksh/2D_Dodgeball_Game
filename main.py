@@ -13,7 +13,6 @@ def Draw_Screen(player1, player2):
     config.WINDOW.blit(player2.player, (player2.hitbox.x, player2.hitbox.y))
 
 
-
 def main():
     config.init()       # initialize global variables
     right_player = playerClass.Player('RIGHT')
@@ -28,6 +27,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+        
+        keys_pressed = pygame.key.get_pressed()
+        right_player.Handle_Movement(keys_pressed)
+        left_player.Handle_Movement(keys_pressed)
         
         Draw_Screen(left_player, right_player)
         pygame.display.update()

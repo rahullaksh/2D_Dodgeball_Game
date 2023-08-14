@@ -2,16 +2,17 @@ import pygame
 import os
 
 def init():
-    global WIDTH, HEIGHT, WINDOW, FPS, BACKGROUND, DIVIDER_WIDTH, DIVIDER, BLACK, PLAYER_WIDTH, PLAYER_HEIGHT
+    global WIDTH, HEIGHT, WINDOW, FPS, BACKGROUND, DIVIDER_WIDTH, DIVIDER, BLACK, PLAYER_WIDTH  
+    global PLAYER_HEIGHT, PLAYER_VELOCITY 
 
-    # set up window
+    # window configuration
     WIDTH, HEIGHT = 900, 500
     WINDOW =  pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Dodgeball")
 
     FPS = 60
 
-    # set up background and divider
+    # background and divider configuration
     BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join
                             ('Assets', 'grassBackground.png')), (WIDTH, HEIGHT))
     DIVIDER_WIDTH = 10
@@ -20,4 +21,6 @@ def init():
     # rgb colors
     BLACK = (0, 0, 0)
 
+    # player configuration
     PLAYER_WIDTH, PLAYER_HEIGHT = 45, 70
+    PLAYER_VELOCITY = 4
