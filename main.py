@@ -12,6 +12,7 @@ def Draw_Screen(player1, player2):
     config.WINDOW.blit(player1.player, (player1.hitbox.x, player1.hitbox.y))
     config.WINDOW.blit(player2.player, (player2.hitbox.x, player2.hitbox.y))
 
+    # draw balls
     for i in range(config.DODGEBALL_NUMBERS):
         config.WINDOW.blit(player1.dodgeballs[i].ball, (player1.dodgeballs[i].hitbox.x, 
                                                 player1.dodgeballs[i].hitbox.y))

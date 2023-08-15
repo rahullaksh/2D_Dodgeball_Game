@@ -5,8 +5,10 @@ from dodgeball_class import Dodgeball
 
 class Player:
     def __init__(self, player_section):
+        # attributes: player_selection, dodgeballs, player, hitbox, balls
         self.player_section = player_section
         self.dodgeballs = []
+        self.balls = config.DODGEBALL_NUMBERS
 
 
         if player_section == 'RIGHT' or player_section ==  'LEFT':
@@ -74,5 +76,4 @@ class Player:
                 config.PLAYER_VELOCITY < config.WIDTH):
                 self._Move_Right()
 
-    def _Throw(self):
-        self.balls -= 1
+

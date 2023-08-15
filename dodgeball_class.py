@@ -6,6 +6,7 @@ class Dodgeball:
     def __init__(self, direction, number):
         self.direction = direction
         self.__number = number
+        self.safe = True
 
         # valid initialization checks
         if direction == 'RIGHT' or direction == 'LEFT': pass
