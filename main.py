@@ -18,6 +18,11 @@ def Draw_Screen(player1, player2):
                                                 player1.dodgeballs[i].hitbox.y))
         config.WINDOW.blit(player2.dodgeballs[i].ball, (player2.dodgeballs[i].hitbox.x, 
                                                 player2.dodgeballs[i].hitbox.y))
+        
+def Handle_Ball(right_player, left_player):
+    # allow players to grab ball
+    right_player._Handle_Grab_Ball()
+    left_player._Handle_Grab_Ball()
 
 
 def main():
@@ -31,6 +36,7 @@ def main():
     # game loop
     while run:
         clock.tick(config.FPS)     # run clock   
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -38,8 +44,9 @@ def main():
                 if event.key == pygame.K_LSHIFT:
                     left_player.Throw()
                 if event.key == pygame.K_RSHIFT:
-                    right_player.Throw()
-
+                    right_player.Throw()            
+            
+        Handle_Ball(right_player, left_player)
 
         keys_pressed = pygame.key.get_pressed()
         right_player._Handle_Movement(keys_pressed)

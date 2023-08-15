@@ -29,4 +29,13 @@ class Dodgeball:
         DODGEBALL_IMAGE = pygame.image.load(os.path.join('Assets', 'red_dodgeball.png'))
         self.ball = pygame.transform.scale(DODGEBALL_IMAGE, (config.DODGEBALL_SIZE, config.DODGEBALL_SIZE))
         self.hitbox = pygame.Rect(self.__spawn[0], self.__spawn[1], config.DODGEBALL_SIZE, config.DODGEBALL_SIZE)
+
+    def _stick(self, player, ball_id):
+        # makes ball stick to player
+        if player.player_section == 'RIGHT':
+            player.dodgeballs[ball_id].hitbox.x = player.hitbox.x + 10
+            player.dodgeballs[ball_id].hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2)
+        else:
+            player.dodgeballs[ball_id].hitbox.x = (player.hitbox.x + config.PLAYER_WIDTH - 10)
+            player.dodgeballs[ball_id].hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2)
         

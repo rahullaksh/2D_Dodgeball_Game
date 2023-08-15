@@ -9,6 +9,8 @@ class Player:
         self.player_section = player_section
         self.dodgeballs = []
         self.balls = config.DODGEBALL_NUMBERS
+        self.hands_full = False
+        self.holding_ball = None
 
 
         if player_section == 'RIGHT' or player_section ==  'LEFT':
@@ -75,5 +77,16 @@ class Player:
             if keys_pressed[pygame.K_RIGHT] and (self.hitbox.x + config.PLAYER_WIDTH +
                 config.PLAYER_VELOCITY < config.WIDTH):
                 self._Move_Right()
-
-
+    
+    def _Handle_Grab_Ball(self):
+        if not self.hands_full:
+            ball_id = 0
+            for ball in self.dodgeballs:
+                if ball.hitbox.colliderect(self.hitbox):
+                    self.holding_ball = ball_id
+                    ball._stick(self, self.holding_ball)
+                    self.hands_full = True
+                    break
+                ball_id += 1
+        else:
+            self.dodgeballs[self.holding_ball]._stick(self, self.holding_ball)
