@@ -20,6 +20,13 @@ def Draw_Screen(player1, player2):
                                                 player2.dodgeballs[i].hitbox.y))
         
 def Handle_Ball(right_player, left_player):
+    # controls ball traveling across screen
+    for i in range(config.DODGEBALL_NUMBERS):
+        if left_player.dodgeballs[i].traveling:
+            left_player.dodgeballs[i]._Travel(left_player)
+        if right_player.dodgeballs[i].traveling:
+            right_player.dodgeballs[i]._Travel(right_player)
+
     # allow players to grab ball
     right_player._Handle_Grab_Ball()
     left_player._Handle_Grab_Ball()
@@ -42,9 +49,9 @@ def main():
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LSHIFT:
-                    left_player.Throw()
-                if event.key == pygame.K_RSHIFT:
-                    right_player.Throw()            
+                    left_player._Throw()
+                if event.key == pygame.K_SPACE:
+                    right_player._Throw()            
             
         Handle_Ball(right_player, left_player)
 

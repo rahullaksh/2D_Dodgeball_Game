@@ -84,9 +84,15 @@ class Player:
             for ball in self.dodgeballs:
                 if ball.hitbox.colliderect(self.hitbox):
                     self.holding_ball = ball_id
-                    ball._stick(self, self.holding_ball)
+                    ball._Stick(self, self.holding_ball)
                     self.hands_full = True
                     break
                 ball_id += 1
         else:
-            self.dodgeballs[self.holding_ball]._stick(self, self.holding_ball)
+            self.dodgeballs[self.holding_ball]._Stick(self, self.holding_ball)
+
+    def _Throw(self):
+        if self.holding_ball != None:
+            self.dodgeballs[self.holding_ball]._Travel(self)
+            self.hands_full = False
+            self.holding_ball = None
