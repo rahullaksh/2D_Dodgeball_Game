@@ -14,18 +14,18 @@ def Draw_Screen(player1, player2):
 
     # draw balls
     for i in range(config.DODGEBALL_NUMBERS):
-        config.WINDOW.blit(player1.dodgeballs[i].ball, (player1.dodgeballs[i].hitbox.x, 
-                                                player1.dodgeballs[i].hitbox.y))
-        config.WINDOW.blit(player2.dodgeballs[i].ball, (player2.dodgeballs[i].hitbox.x, 
-                                                player2.dodgeballs[i].hitbox.y))
+        config.WINDOW.blit(player1.Get_Ball(i).ball, (player1.Get_Ball(i).hitbox.x, 
+                                                player1.Get_Ball(i).hitbox.y))
+        config.WINDOW.blit(player2.Get_Ball(i).ball, (player2.Get_Ball(i).hitbox.x, 
+                                                player2.Get_Ball(i).hitbox.y))
         
 def Handle_Ball(right_player, left_player):
     # controls ball traveling across screen
     for i in range(config.DODGEBALL_NUMBERS):
-        if left_player.dodgeballs[i].traveling:
-            left_player.dodgeballs[i]._Travel(left_player)
-        if right_player.dodgeballs[i].traveling:
-            right_player.dodgeballs[i]._Travel(right_player)
+        if left_player.Get_Ball(i).traveling:
+            left_player.Get_Ball(i)._Travel(left_player)
+        if right_player.Get_Ball(i).traveling:
+            right_player.Get_Ball(i)._Travel(right_player)
 
     # allow players to grab ball
     right_player._Handle_Grab_Ball()
@@ -35,7 +35,7 @@ def Handle_Ball(right_player, left_player):
 def main():
     config.init()       # initialize global variables
     right_player = Player('RIGHT')
-    left_player = Player(player_section = 'LEFT')
+    left_player = Player('LEFT')
 
     clock = pygame.time.Clock()     # initialize clock
     run = True
@@ -48,10 +48,10 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LSHIFT:
-                    left_player._Throw()
                 if event.key == pygame.K_SPACE:
-                    right_player._Throw()            
+                    right_player._Throw()
+                if event.key == pygame.K_LSHIFT:
+                    left_player._Throw()            
             
         Handle_Ball(right_player, left_player)
 

@@ -7,10 +7,8 @@ class Player:
     def __init__(self, player_section):
         # attributes: player_selection, dodgeballs, player, hitbox, balls
         self.player_section = player_section
-        self.dodgeballs = []
-        self.balls = config.DODGEBALL_NUMBERS
-        self.hands_full = False
-        self.holding_ball = None
+        self.dodgeball = None       # dodgeball id that the player is holding
+        self.ball_list = []
 
 
         if player_section == 'RIGHT' or player_section ==  'LEFT':
@@ -28,7 +26,7 @@ class Player:
                                       config.PLAYER_HEIGHT)
             
             for i in range(config.DODGEBALL_NUMBERS):
-                self.dodgeballs.append(Dodgeball('RIGHT', i))
+                self.ball_list.append(Dodgeball('RIGHT', i))
 
         else:
             LEFT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'rightPlayer.png'))
@@ -40,7 +38,7 @@ class Player:
                                       config.PLAYER_HEIGHT)
             
             for i in range(config.DODGEBALL_NUMBERS):
-                self.dodgeballs.append(Dodgeball('LEFT', i))
+                self.ball_list.append(Dodgeball('LEFT', i))
     
 
 
@@ -52,6 +50,9 @@ class Player:
         self.hitbox.y -= config.PLAYER_VELOCITY
     def _Move_Down(self):
         self.hitbox.y += config.PLAYER_VELOCITY
+
+    def Get_Ball(self, ball_id):
+        return self.ball_list[ball_id]
 
     def _Handle_Movement(self, keys_pressed):
         if self.player_section == 'LEFT':
@@ -79,20 +80,16 @@ class Player:
                 self._Move_Right()
     
     def _Handle_Grab_Ball(self):
-        if not self.hands_full:
-            ball_id = 0
-            for ball in self.dodgeballs:
+        if self.dodgeball == None:
+            for ball in self.ball_list:
                 if ball.hitbox.colliderect(self.hitbox):
-                    self.holding_ball = ball_id
-                    ball._Stick(self, self.holding_ball)
-                    self.hands_full = True
+                    self.dodgeball = ball._Get_Id()
+                    ball._Stick(self)
                     break
-                ball_id += 1
         else:
-            self.dodgeballs[self.holding_ball]._Stick(self, self.holding_ball)
+            self.ball_list[self.dodgeball]._Stick(self)
 
     def _Throw(self):
-        if self.holding_ball != None:
-            self.dodgeballs[self.holding_ball]._Travel(self)
-            self.hands_full = False
-            self.holding_ball = None
+        if self.dodgeball != None:
+            self.ball_list[self.dodgeball]._Travel(self)
+            self.dodgeball = None
