@@ -80,6 +80,7 @@ class Player:
                 self._Move_Right()
     
     def _Handle_Grab_Ball(self):
+        # pick up ball
         if self.dodgeball == None:
             for ball in self.ball_list:
                 if self.hitbox.colliderect(ball.hitbox):
@@ -87,8 +88,8 @@ class Player:
                     ball.stick = True
                     ball._Stick(self)
                     break
+        # holding ball
         else:
-            # holding ball
             self.Get_Ball(self.dodgeball)._Stick(self)
         return
 
