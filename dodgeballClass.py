@@ -8,6 +8,7 @@ class Dodgeball:
         self.__id = number
         self.safe = True
         self.traveling = False
+        self.stick = False
 
         # valid initialization checks
         if direction == 'RIGHT' or direction == 'LEFT': pass
@@ -33,27 +34,33 @@ class Dodgeball:
 
     def _Stick(self, player):
         # makes ball stick to player
-        if player.player_section == 'RIGHT' and not self.traveling:
-            player.Get_Ball(self.__id).hitbox.x = player.hitbox.x + 10
-            player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2)
-        elif not self.traveling:
-            player.Get_Ball(self.__id).hitbox.x = (player.hitbox.x + config.PLAYER_WIDTH - 10)
-            player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2)
+        if self.stick:
+            if player.player_section == 'RIGHT' and not self.traveling:
+                player.Get_Ball(self.__id).hitbox.x = player.hitbox.x - 8
+                player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2 - 10)
+            elif not self.traveling:
+                player.Get_Ball(self.__id).hitbox.x = (player.hitbox.x + config.PLAYER_WIDTH - 10)
+                player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2)
+        return
 
-    def __Delete(self):
+    def __Delete(self, player):
         self.hitbox.x = self.__spawn[0]
         self.hitbox.y = self.__spawn[1]
         self.traveling = False
+        self.stick = False
+        #player.dodgeball = None
+        return
     
     def _Get_Id(self):
         return self.__id
 
     def _Travel(self, player):
-        self.traveling = True
+        #self.traveling = True
         if player.player_section == 'LEFT':
             self.hitbox.x += config.DODGEBALL_VELOCITY
         else:
             self.hitbox.x -= config.DODGEBALL_VELOCITY 
         
         if self.hitbox.x > config.WIDTH - config.DODGEBALL_SIZE or self.hitbox.x < 0:
-            self.__Delete()
+            self.__Delete(player)
+        return

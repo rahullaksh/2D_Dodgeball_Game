@@ -1,7 +1,7 @@
 import pygame
 import os
 import config
-from dodgeball_class import Dodgeball
+from dodgeballClass import Dodgeball
 
 class Player:
     def __init__(self, player_section):
@@ -18,7 +18,7 @@ class Player:
         
 
         if (player_section == 'RIGHT'):
-            RIGHT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'rightPlayer.png'))
+            RIGHT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'right_player.png'))
             self.player = pygame.transform.scale(RIGHT_PLAYER_IMAGE, (config.PLAYER_WIDTH, config.PLAYER_HEIGHT))
 
             self.hitbox = pygame.Rect((3 * config.WIDTH)//4 - config.PLAYER_WIDTH, 
@@ -29,7 +29,7 @@ class Player:
                 self.ball_list.append(Dodgeball('RIGHT', i))
 
         else:
-            LEFT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'rightPlayer.png'))
+            LEFT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'right_player.png'))
             self.player = pygame.transform.flip(pygame.transform.scale(LEFT_PLAYER_IMAGE, 
                                                 (config.PLAYER_WIDTH, config.PLAYER_HEIGHT)), True, False)
             
@@ -82,14 +82,25 @@ class Player:
     def _Handle_Grab_Ball(self):
         if self.dodgeball == None:
             for ball in self.ball_list:
-                if ball.hitbox.colliderect(self.hitbox):
+                if self.hitbox.colliderect(ball.hitbox):
                     self.dodgeball = ball._Get_Id()
+                    ball.stick = True
                     ball._Stick(self)
                     break
         else:
-            self.ball_list[self.dodgeball]._Stick(self)
+            # holding ball
+            self.Get_Ball(self.dodgeball)._Stick(self)
+        return
 
     def _Throw(self):
         if self.dodgeball != None:
-            self.ball_list[self.dodgeball]._Travel(self)
+            self.Get_Ball(self.dodgeball).traveling = True
+            self.Get_Ball(self.dodgeball).stick = False
+
+            # initial distance to travel to avoid repeat collision after throw 
+            if self.player_section == 'RIGHT':
+                self.Get_Ball(self.dodgeball).hitbox.x -= 40
+            else:
+                self.Get_Ball(self.dodgeball).hitbox.x += 20
+
             self.dodgeball = None

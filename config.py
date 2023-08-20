@@ -16,7 +16,7 @@ def init():
 
     # background and divider configurations
     BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join
-                            ('Assets', 'grassBackground.png')), (WIDTH, HEIGHT))
+                            ('Assets', 'grass_background.png')), (WIDTH, HEIGHT))
     DIVIDER_WIDTH = 10
     DIVIDER = pygame.Rect(WIDTH//2 - DIVIDER_WIDTH, 0, 10, HEIGHT)
 

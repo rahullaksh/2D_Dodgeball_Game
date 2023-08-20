@@ -20,16 +20,16 @@ def Draw_Screen(player1, player2):
                                                 player2.Get_Ball(i).hitbox.y))
         
 def Handle_Ball(right_player, left_player):
+    # allow players to grab ball
+    right_player._Handle_Grab_Ball()
+    left_player._Handle_Grab_Ball()
+
     # controls ball traveling across screen
     for i in range(config.DODGEBALL_NUMBERS):
         if left_player.Get_Ball(i).traveling:
             left_player.Get_Ball(i)._Travel(left_player)
         if right_player.Get_Ball(i).traveling:
             right_player.Get_Ball(i)._Travel(right_player)
-
-    # allow players to grab ball
-    right_player._Handle_Grab_Ball()
-    left_player._Handle_Grab_Ball()
 
 
 def main():
