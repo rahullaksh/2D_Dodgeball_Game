@@ -105,4 +105,5 @@ class Player:
             else:
                 self.Get_Ball(self.dodgeball).hitbox.x += 20
 
+            self.Get_Ball(self.dodgeball).Start_Animation()
             self.dodgeball = None

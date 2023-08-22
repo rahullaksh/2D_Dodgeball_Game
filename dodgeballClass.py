@@ -6,9 +6,12 @@ class Dodgeball:
     def __init__(self, direction, number):
         self.direction = direction
         self.__id = number
-        self.safe = True
         self.traveling = False
         self.stick = False
+
+        self.frame = 0
+        self.animation_list = []
+        self.last_update = -1
 
         # valid initialization checks
         if direction == 'RIGHT' or direction == 'LEFT': pass
@@ -29,8 +32,13 @@ class Dodgeball:
 
         # load image and hitbox
         DODGEBALL_IMAGE = pygame.image.load(os.path.join('Assets', 'dodgeball.png')).convert_alpha()
-        self.ball = pygame.transform.scale(DODGEBALL_IMAGE, (config.DODGEBALL_SIZE, config.DODGEBALL_SIZE))
+        ball = pygame.transform.scale(DODGEBALL_IMAGE, (config.DODGEBALL_SIZE, config.DODGEBALL_SIZE))
         self.hitbox = pygame.Rect(self.__spawn[0], self.__spawn[1], config.DODGEBALL_SIZE, config.DODGEBALL_SIZE)
+
+        # load animation frames
+        for i in range(4):
+            temp_ball = pygame.transform.rotate(ball, i * 90)
+            self.animation_list.append(temp_ball)
 
     def _Stick(self, player):
         # makes ball stick to player
@@ -51,6 +59,9 @@ class Dodgeball:
     
     def _Get_Id(self):
         return self.__id
+    
+    def Start_Animation(self):
+        self.last_update = pygame.time.get_ticks()
 
     def _Travel(self, player):
         if player.player_section == 'LEFT':
@@ -60,4 +71,16 @@ class Dodgeball:
         
         if self.hitbox.x > config.WIDTH - config.DODGEBALL_SIZE or self.hitbox.x < 0:
             self.__Delete(player)
+        else:
+            # cycle through animation_list for traveling animation
+            current_time = pygame.time.get_ticks()
+            if current_time - self.last_update >= config.BALL_ANIMATION_SPEED:
+                self.frame += 1
+                self.last_update = current_time
+                if self.frame >= 4:
+                    self.frame = 0
+
+    def Display_Frame(self):
+        if self.traveling: return self.animation_list[self.frame]
+        else: return self.animation_list[0]
             

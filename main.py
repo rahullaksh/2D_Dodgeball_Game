@@ -22,9 +22,9 @@ def Draw_Screen(player1, player2):
 
     # draw balls
     for i in range(config.DODGEBALL_NUMBERS):
-        config.WINDOW.blit(player1.Get_Ball(i).ball, (player1.Get_Ball(i).hitbox.x, 
+        config.WINDOW.blit(player1.Get_Ball(i).Display_Frame(), (player1.Get_Ball(i).hitbox.x, 
                                                 player1.Get_Ball(i).hitbox.y))
-        config.WINDOW.blit(player2.Get_Ball(i).ball, (player2.Get_Ball(i).hitbox.x, 
+        config.WINDOW.blit(player2.Get_Ball(i).Display_Frame(), (player2.Get_Ball(i).hitbox.x, 
                                                 player2.Get_Ball(i).hitbox.y))
         
 def Handle_Ball(right_player, left_player):
@@ -58,6 +58,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     right_player._Throw()
+                
                 if event.key == pygame.K_LSHIFT:
                     left_player._Throw()            
             
