@@ -28,7 +28,7 @@ class Dodgeball:
         self.__spawn = (SPAWN_X, SPAWN_Y)
 
         # load image and hitbox
-        DODGEBALL_IMAGE = pygame.image.load(os.path.join('Assets', 'red_dodgeball.png'))
+        DODGEBALL_IMAGE = pygame.image.load(os.path.join('Assets', 'dodgeball.png')).convert_alpha()
         self.ball = pygame.transform.scale(DODGEBALL_IMAGE, (config.DODGEBALL_SIZE, config.DODGEBALL_SIZE))
         self.hitbox = pygame.Rect(self.__spawn[0], self.__spawn[1], config.DODGEBALL_SIZE, config.DODGEBALL_SIZE)
 

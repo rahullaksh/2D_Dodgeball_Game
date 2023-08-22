@@ -1,11 +1,19 @@
 import pygame
 import config
 from playerClass import Player
+import os
 
 
 def Draw_Screen(player1, player2):
     # draw window
-    config.WINDOW.blit(config.BACKGROUND, (0, 0))
+    draw_x_times = config.WIDTH // config.BACKGROUND.get_width() + 1
+    draw_y_times = config.HEIGHT // config.BACKGROUND.get_height() + 1
+    for y in range(draw_y_times):
+        for x in range(draw_x_times):
+            x_position = x * config.BACKGROUND.get_width()
+            y_position = y * config.BACKGROUND.get_height()
+            config.WINDOW.blit(config.BACKGROUND, (x_position, y_position))
+
     pygame.draw.rect(config.WINDOW, config.BLACK, config.DIVIDER)
 
     # draw player

@@ -18,7 +18,8 @@ class Player:
         
 
         if (player_section == 'RIGHT'):
-            RIGHT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'right_player.png'))
+            RIGHT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'right_player.png')).convert_alpha()
+            RIGHT_PLAYER_IMAGE.set_colorkey((255, 255, 255))
             self.player = pygame.transform.scale(RIGHT_PLAYER_IMAGE, (config.PLAYER_WIDTH, config.PLAYER_HEIGHT))
 
             self.hitbox = pygame.Rect((3 * config.WIDTH)//4 - config.PLAYER_WIDTH, 

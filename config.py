@@ -4,8 +4,7 @@ import os
 def init():
     global WIDTH, HEIGHT, WINDOW, FPS, BACKGROUND, DIVIDER_WIDTH, DIVIDER, BLACK, PLAYER_WIDTH  
     global PLAYER_HEIGHT, PLAYER_VELOCITY, DODGEBALL_SIZE, DODGEBALL_VELOCITY, DODGEBALL_NUMBERS
-    global SPAWN_TOP_PADDING, SPAWN_SIDE_PADDING, SPAWN_BETWEEN_BALL_PADDING, LEFT_RETRIEVE_BALL
-    global RIGHT_RETRIEVE_BALL
+    global SPAWN_TOP_PADDING, SPAWN_SIDE_PADDING, SPAWN_BETWEEN_BALL_PADDING
 
     # window configurations
     WIDTH, HEIGHT = 900, 500
@@ -15,8 +14,7 @@ def init():
     FPS = 60
 
     # background and divider configurations
-    BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join
-                            ('Assets', 'grass_background.png')), (WIDTH, HEIGHT))
+    BACKGROUND = pygame.image.load(os.path.join('Assets', 'grass_background.jpg')).convert()
     DIVIDER_WIDTH = 10
     DIVIDER = pygame.Rect(WIDTH//2 - DIVIDER_WIDTH, 0, 10, HEIGHT)
 
