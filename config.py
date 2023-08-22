@@ -16,7 +16,10 @@ def init():
     # background and divider configurations
     BACKGROUND = pygame.image.load(os.path.join('Assets', 'grass_background.jpg')).convert()
     DIVIDER_WIDTH = 10
-    DIVIDER = pygame.Rect(WIDTH//2 - DIVIDER_WIDTH, 0, 10, HEIGHT)
+    divider_image = pygame.image.load(os.path.join('Assets', 'chalk_divider.png')).convert_alpha()
+    divider_image = pygame.transform.scale(divider_image, (divider_image.get_width() // 2, 
+                                                           divider_image.get_height() // 2))
+    DIVIDER = pygame.transform.rotate(divider_image, 90)
 
     # rgb colors
     BLACK = (0, 0, 0)

@@ -65,7 +65,7 @@ class Player:
             if keys_pressed[pygame.K_a] and self.hitbox.x - config.PLAYER_VELOCITY > 0:
                 self._Move_Left()
             if keys_pressed[pygame.K_d] and self.hitbox.x + config.PLAYER_WIDTH + \
-                config.PLAYER_VELOCITY < config.WIDTH // 2 - config.DIVIDER_WIDTH:
+                config.PLAYER_VELOCITY < config.WIDTH // 2 - config.DIVIDER_WIDTH + 2:
                 self._Move_Right()
         else:
             if keys_pressed[pygame.K_UP] and self.hitbox.y - config.PLAYER_VELOCITY > 0:
@@ -74,7 +74,7 @@ class Player:
                 config.PLAYER_VELOCITY < config.HEIGHT):
                 self._Move_Down()
             if keys_pressed[pygame.K_LEFT] and (self.hitbox.x - config.PLAYER_VELOCITY > 
-                config.WIDTH // 2):
+                config.WIDTH // 2 - 2):
                 self._Move_Left()
             if keys_pressed[pygame.K_RIGHT] and (self.hitbox.x + config.PLAYER_WIDTH +
                 config.PLAYER_VELOCITY < config.WIDTH):

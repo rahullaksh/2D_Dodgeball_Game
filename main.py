@@ -14,7 +14,15 @@ def Draw_Screen(player1, player2):
             y_position = y * config.BACKGROUND.get_height()
             config.WINDOW.blit(config.BACKGROUND, (x_position, y_position))
 
-    pygame.draw.rect(config.WINDOW, config.BLACK, config.DIVIDER)
+    # draw divider
+    extend_divider = config.HEIGHT // config.DIVIDER.get_width() + 1
+    for i in range(extend_divider):
+        if i == 0:
+            config.WINDOW.blit(config.DIVIDER, (config.WIDTH // 2 - config.DIVIDER.get_height() / 2 + 30, 
+                                                i * config.DIVIDER.get_width() - 50))
+        else:
+            config.WINDOW.blit(config.DIVIDER, (config.WIDTH // 2 - config.DIVIDER.get_height() / 2 + 30, 
+                                                i * (config.DIVIDER.get_width() - 77)))
 
     # draw player
     config.WINDOW.blit(player1.player, (player1.hitbox.x, player1.hitbox.y))

@@ -50,7 +50,7 @@ class Dodgeball:
                 player.Get_Ball(self.__id).hitbox.x = (player.hitbox.x + config.PLAYER_WIDTH - 10)
                 player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2)
 
-    def __Delete(self, player):
+    def __Delete(self):
         self.hitbox.x = self.__spawn[0]
         self.hitbox.y = self.__spawn[1]
         self.traveling = False
@@ -70,7 +70,7 @@ class Dodgeball:
             self.hitbox.x -= config.DODGEBALL_VELOCITY 
         
         if self.hitbox.x > config.WIDTH - config.DODGEBALL_SIZE or self.hitbox.x < 0:
-            self.__Delete(player)
+            self.__Delete()
         else:
             # cycle through animation_list for traveling animation
             current_time = pygame.time.get_ticks()
