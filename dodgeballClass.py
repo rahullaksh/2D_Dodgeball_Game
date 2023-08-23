@@ -11,7 +11,7 @@ class Dodgeball:
 
         self.frame = 0
         self.animation_list = []
-        self.last_update = -1
+        self.last_update = 0
 
         # valid initialization checks
         if direction == 'RIGHT' or direction == 'LEFT': pass

@@ -5,6 +5,7 @@ def init():
     global WIDTH, HEIGHT, WINDOW, FPS, BACKGROUND, DIVIDER_WIDTH, DIVIDER, BLACK, PLAYER_WIDTH  
     global PLAYER_HEIGHT, PLAYER_VELOCITY, DODGEBALL_SIZE, DODGEBALL_VELOCITY, DODGEBALL_NUMBERS
     global SPAWN_TOP_PADDING, SPAWN_SIDE_PADDING, SPAWN_BETWEEN_BALL_PADDING, BALL_ANIMATION_SPEED
+    global PLAYER_SPRITESHEET, PLAYER_SIZE_SCALE, PLAYER_ANIMATION_SPEED
 
     # window configurations
     WIDTH, HEIGHT = 900, 500
@@ -26,7 +27,10 @@ def init():
 
     # player configurations
     PLAYER_WIDTH, PLAYER_HEIGHT = 45, 70
+    PLAYER_SIZE_SCALE = 1.5
     PLAYER_VELOCITY = 4
+    PLAYER_SPRITESHEET = pygame.image.load(os.path.join('Assets', 'character_spritesheet.png')).convert_alpha()
+    PLAYER_ANIMATION_SPEED = 100
 
     # dodgeball configurations
     DODGEBALL_SIZE = 20

@@ -1,7 +1,6 @@
 import pygame
 import config
-from playerClass import Player
-import os
+from playerClass import Player, Initialize_Player_Animations
 
 
 def Draw_Screen(player1, player2):
@@ -25,8 +24,8 @@ def Draw_Screen(player1, player2):
                                                 i * (config.DIVIDER.get_width() - 77)))
 
     # draw player
-    config.WINDOW.blit(player1.player, (player1.hitbox.x, player1.hitbox.y))
-    config.WINDOW.blit(player2.player, (player2.hitbox.x, player2.hitbox.y))
+    player1.Draw_Player()
+    player2.Draw_Player()
 
     # draw balls
     for i in range(config.DODGEBALL_NUMBERS):
@@ -56,6 +55,8 @@ def main():
     clock = pygame.time.Clock()     # initialize clock
     run = True
 
+    Initialize_Player_Animations()
+
     # game loop
     while run:
         clock.tick(config.FPS)     # run clock   
@@ -80,6 +81,7 @@ def main():
         pygame.display.update()
 
     pygame.QUIT
+    quit()
 
 # program only runs if main.py is run directly
 if __name__ == "__main__":

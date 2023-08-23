@@ -4,12 +4,23 @@ import config
 from dodgeballClass import Dodgeball
 
 class Player:
+    animations = { 'idle'  : {'animation_start_coordinates' : (0, 0), 'right_animation': [], 
+                              'left_animation' : [], 'frames' : 6},
+                   'run'   : {'animation_start_coordinates' : (205, 61), 'right_animation': [], 
+                              'left_animation' : [], 'frames' : 6},
+                   'throw' : {'animation_start_coordinates' : (287, 126), 'right_animation': [], 
+                              'left_animation' : [], 'frames' : 3} }
+    
     def __init__(self, player_section):
         # attributes: player_selection, dodgeballs, player, hitbox, balls
         self.player_section = player_section
         self.dodgeball = None       # dodgeball id that the player is holding
         self.ball_list = []
+        self.direction = None
 
+        self.frame = 0
+        self.last_update = 0
+        self.current_action = 'idle'
 
         if player_section == 'RIGHT' or player_section ==  'LEFT':
             pass
@@ -18,6 +29,7 @@ class Player:
         
 
         if (player_section == 'RIGHT'):
+            self.direction = 'LEFT'
             RIGHT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'right_player.png')).convert_alpha()
             RIGHT_PLAYER_IMAGE.set_colorkey((255, 255, 255))
             self.player = pygame.transform.scale(RIGHT_PLAYER_IMAGE, (config.PLAYER_WIDTH, config.PLAYER_HEIGHT))
@@ -30,6 +42,7 @@ class Player:
                 self.ball_list.append(Dodgeball('RIGHT', i))
 
         else:
+            self.direction = 'RIGHT'
             LEFT_PLAYER_IMAGE = pygame.image.load(os.path.join('Assets', 'right_player.png'))
             self.player = pygame.transform.flip(pygame.transform.scale(LEFT_PLAYER_IMAGE, 
                                                 (config.PLAYER_WIDTH, config.PLAYER_HEIGHT)), True, False)
@@ -40,7 +53,6 @@ class Player:
             
             for i in range(config.DODGEBALL_NUMBERS):
                 self.ball_list.append(Dodgeball('LEFT', i))
-    
 
 
     def _Move_Left(self):
@@ -107,3 +119,51 @@ class Player:
 
             self.Get_Ball(self.dodgeball).Start_Animation()
             self.dodgeball = None
+
+    def Draw_Player(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.current_action == 'idle':
+            if self.direction == 'RIGHT': image = self.animations['idle']['right_animation'][self.frame]
+            else: image = self.animations['idle']['left_animation'][self.frame]
+            config.WINDOW.blit(image, (self.hitbox.x, self.hitbox.y))
+
+            if current_time - self.last_update >= config.PLAYER_ANIMATION_SPEED:
+                self.frame += 1
+                self.last_update = current_time
+                if self.frame >= self.animations['idle']['frames']:
+                    self.frame = 0
+
+def Initialize_Player_Animations():
+    Player.animations['idle']['right_animation'] = Extract_Animation('idle')
+    Player.animations['run']['right_animation'] = Extract_Animation('run')
+    Player.animations['throw']['right_animation'] = Extract_Animation('throw')
+
+    rotate_left = lambda frame: pygame.transform.flip(frame, True, False)
+    for i in range(Player.animations['idle']['frames']):
+        Player.animations['idle']['left_animation'].append(rotate_left(Player.animations['idle']['right_animation'][i]))
+    for i in range(Player.animations['run']['frames']):
+        Player.animations['run']['left_animation'].append(rotate_left(Player.animations['run']['right_animation'][i]))
+    for i in range(Player.animations['throw']['frames']):
+        Player.animations['throw']['left_animation'].append(rotate_left(Player.animations['throw']['right_animation'][i]))
+
+def Extract_Animation(animation):
+    temp_animation_list = []
+    start_coordinates = Player.animations[animation]['animation_start_coordinates']
+    original_width, original_height = 29, 51
+    start_x, start_y = start_coordinates[0], start_coordinates[1]
+
+    for i in range(Player.animations[animation]['frames']):
+        image = pygame.Surface((original_width, original_height)).convert()
+        image.fill((138,180,18))
+        image.blit(config.PLAYER_SPRITESHEET, (0, 0), (start_x, start_y, start_x + original_width, 
+                                                start_y + original_height))
+        
+        config.PLAYER_WIDTH = original_width * config.PLAYER_SIZE_SCALE
+        config.PLAYER_HEIGHT = original_height * config.PLAYER_SIZE_SCALE
+        image = pygame.transform.scale(image, (config.PLAYER_WIDTH, config.PLAYER_HEIGHT))
+        image.set_colorkey((138,180,18))
+        temp_animation_list.append(image)
+        if i != 0: start_x = i * (original_width + 6)
+
+    return temp_animation_list
