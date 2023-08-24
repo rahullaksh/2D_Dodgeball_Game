@@ -1,8 +1,11 @@
 import config
 import pygame
 import os
+from animationClass import Animation
 
 class Dodgeball:
+    ANIMATION = Animation([(0, 0)], 4)
+
     def __init__(self, direction, number):
         self.direction = direction
         self.__id = number
@@ -10,7 +13,6 @@ class Dodgeball:
         self.stick = False
 
         self.frame = 0
-        self.animation_list = []
         self.last_update = 0
 
         # valid initialization checks
@@ -21,7 +23,7 @@ class Dodgeball:
         
 
         # spawn location and spacing
-        if direction == 'RIGHT':
+        if self.direction == 'LEFT':
             SPAWN_X = config.WIDTH - config.SPAWN_SIDE_PADDING - config.DODGEBALL_SIZE
         else:
             SPAWN_X = config.SPAWN_SIDE_PADDING
@@ -38,17 +40,17 @@ class Dodgeball:
         # load animation frames
         for i in range(4):
             temp_ball = pygame.transform.rotate(ball, i * 90)
-            self.animation_list.append(temp_ball)
+            Dodgeball.ANIMATION.Append_Frame('RIGHT', temp_ball)
 
     def _Stick(self, player):
         # makes ball stick to player
         if self.stick:
-            if player.player_section == 'RIGHT':
-                player.Get_Ball(self.__id).hitbox.x = player.hitbox.x - 8
-                player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2 - 10)
-            else:
+            if player.direction == 'RIGHT':
                 player.Get_Ball(self.__id).hitbox.x = (player.hitbox.x + config.PLAYER_WIDTH - 10)
                 player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2)
+            elif player.direction == 'LEFT': 
+                player.Get_Ball(self.__id).hitbox.x = player.hitbox.x - 8
+                player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2 - 10)
 
     def __Delete(self):
         self.hitbox.x = self.__spawn[0]
@@ -64,7 +66,7 @@ class Dodgeball:
         self.last_update = pygame.time.get_ticks()
 
     def _Travel(self, player):
-        if player.player_section == 'LEFT':
+        if self.direction == 'RIGHT':
             self.hitbox.x += config.DODGEBALL_VELOCITY
         else:
             self.hitbox.x -= config.DODGEBALL_VELOCITY 
@@ -81,6 +83,6 @@ class Dodgeball:
                     self.frame = 0
 
     def Display_Frame(self):
-        if self.traveling: return self.animation_list[self.frame]
-        else: return self.animation_list[0]
+        if self.traveling: return Dodgeball.ANIMATION.Get_Frame('RIGHT', self.frame)
+        else: return Dodgeball.ANIMATION.Get_Frame('RIGHT', 0)
             

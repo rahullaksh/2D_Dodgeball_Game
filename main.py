@@ -67,15 +67,14 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     right_player._Throw()
-                
                 if event.key == pygame.K_LSHIFT:
                     left_player._Throw()            
-            
+
         Handle_Ball(right_player, left_player)
 
         keys_pressed = pygame.key.get_pressed()
-        right_player._Handle_Movement(keys_pressed)
-        left_player._Handle_Movement(keys_pressed)
+        if right_player.current_action != 'throw': right_player._Handle_Movement(keys_pressed)
+        if left_player.current_action != 'throw': left_player._Handle_Movement(keys_pressed)
         
         Draw_Screen(left_player, right_player)
         pygame.display.update()
