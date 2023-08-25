@@ -52,7 +52,7 @@ class Dodgeball:
                 player.Get_Ball(self.__id).hitbox.x = player.hitbox.x - 8
                 player.Get_Ball(self.__id).hitbox.y = (player.hitbox.y + config.PLAYER_HEIGHT // 2 - 10)
 
-    def __Delete(self):
+    def _Delete(self):
         self.hitbox.x = self.__spawn[0]
         self.hitbox.y = self.__spawn[1]
         self.traveling = False
@@ -65,14 +65,14 @@ class Dodgeball:
     def Start_Animation(self):
         self.last_update = pygame.time.get_ticks()
 
-    def _Travel(self, player):
+    def _Travel(self):
         if self.direction == 'RIGHT':
             self.hitbox.x += config.DODGEBALL_VELOCITY
         else:
             self.hitbox.x -= config.DODGEBALL_VELOCITY 
         
         if self.hitbox.x > config.WIDTH - config.DODGEBALL_SIZE or self.hitbox.x < 0:
-            self.__Delete()
+            self._Delete()
         else:
             # cycle through animation_list for traveling animation
             current_time = pygame.time.get_ticks()
@@ -86,3 +86,11 @@ class Dodgeball:
         if self.traveling: return Dodgeball.ANIMATION.Get_Frame('RIGHT', self.frame)
         else: return Dodgeball.ANIMATION.Get_Frame('RIGHT', 0)
             
+    def Check_Hit(self, player):
+        if self.hitbox.colliderect(player.hitbox):
+            if player.player_section == 'RIGHT':
+                pygame.event.post(pygame.event.Event(config.RIGHT_PLAYER_HIT))
+                self._Delete()
+            elif player.player_section == 'LEFT':
+                pygame.event.post(pygame.event.Event(config.LEFT_PLAYER_HIT))
+                self._Delete()

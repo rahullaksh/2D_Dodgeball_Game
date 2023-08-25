@@ -42,9 +42,11 @@ def Handle_Ball(right_player, left_player):
     # controls ball traveling across screen
     for i in range(config.DODGEBALL_NUMBERS):
         if left_player.Get_Ball(i).traveling:
-            left_player.Get_Ball(i)._Travel(left_player)
+            left_player.Get_Ball(i)._Travel()
+            left_player.Get_Ball(i).Check_Hit(right_player)
         if right_player.Get_Ball(i).traveling:
-            right_player.Get_Ball(i)._Travel(right_player)
+            right_player.Get_Ball(i)._Travel()
+            right_player.Get_Ball(i).Check_Hit(left_player)
 
 
 def main():
@@ -64,17 +66,28 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    right_player._Throw()
-                if event.key == pygame.K_LSHIFT:
-                    left_player._Throw()            
+            if event.type == config.LEFT_PLAYER_HIT:
+                left_player.current_action = 'hit'
+                if left_player.dodgeball != None:
+                    left_player.Get_Ball(left_player.dodgeball)._Delete()
+                    left_player.dodgeball = None
+            if event.type == config.RIGHT_PLAYER_HIT:
+                right_player.current_action = 'hit'
+                if right_player.dodgeball != None:
+                    right_player.Get_Ball(right_player.dodgeball)._Delete()
+                    right_player.dodgeball = None
 
         Handle_Ball(right_player, left_player)
 
         keys_pressed = pygame.key.get_pressed()
-        if right_player.current_action != 'throw': right_player._Handle_Movement(keys_pressed)
-        if left_player.current_action != 'throw': left_player._Handle_Movement(keys_pressed)
+        if keys_pressed[pygame.K_SPACE]:
+            right_player._Throw()
+        if keys_pressed[pygame.K_LSHIFT]:
+            left_player._Throw()
+        if right_player.current_action != 'throw' or right_player.current_action != 'hit': 
+            right_player._Handle_Movement(keys_pressed)
+        if left_player.current_action != 'throw' or left_player.current_action != 'hit': 
+            left_player._Handle_Movement(keys_pressed)
         
         Draw_Screen(left_player, right_player)
         pygame.display.update()

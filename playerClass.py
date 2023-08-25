@@ -19,10 +19,17 @@ class Player:
     THROW_FRAME_COORDINATES = [((148, 121), (184, 171)),
                                ((188, 121), (222, 171)),
                                ((223, 121), (262, 171))]
+    HIT_FRAME_COORDINATES = [((286, 125), (321, 173)), 
+                             ((321, 125), (356, 173)), 
+                             ((356, 125), (391,173)),
+                             ((286, 125), (321, 173)), 
+                             ((321, 125), (356, 173)), 
+                             ((356, 125), (391,173))]
      
     ACTIONS = {'idle': Animation(IDLE_FRAME_COORDINATES, 6), 
                'run': Animation(RUN_FRAME_COORDINATES, 6), 
-               'throw': Animation(THROW_FRAME_COORDINATES, 3)}
+               'throw': Animation(THROW_FRAME_COORDINATES, 3),
+               'hit': Animation(HIT_FRAME_COORDINATES, 6)}
 
     def __init__(self, player_section):
         # attributes: player_selection, dodgeballs, player, hitbox, balls
@@ -34,6 +41,7 @@ class Player:
         self.frame = 0
         self.last_update = 0
         self.current_action = 'idle'
+        self.doing_hit = 0
 
         if player_section == 'RIGHT' or player_section ==  'LEFT':
             pass
@@ -77,9 +85,9 @@ class Player:
         return self.ball_list[ball_id]
 
     def _Handle_Movement(self, keys_pressed):
-        if not any(pygame.key.get_pressed()):
+        if not any(keys_pressed) and self.current_action != 'throw' and self.current_action != 'hit':
             self.current_action = 'idle'
-        elif self.player_section == 'LEFT' and self.current_action != 'throw':
+        elif self.player_section == 'LEFT' and self.current_action != 'throw' and self.current_action != 'hit':
             if keys_pressed[pygame.K_w] and self.hitbox.y - config.PLAYER_VELOCITY > 0:
                 self._Move_Up()
             if keys_pressed[pygame.K_s] and self.hitbox.y + config.PLAYER_HEIGHT + \
@@ -90,7 +98,7 @@ class Player:
             if keys_pressed[pygame.K_d] and self.hitbox.x + config.PLAYER_WIDTH + \
                 config.PLAYER_VELOCITY < config.WIDTH // 2 - config.DIVIDER_WIDTH + 2:
                 self._Move_Right()
-        elif self.player_section == 'RIGHT' and self.current_action != 'throw':
+        elif self.player_section == 'RIGHT' and self.current_action != 'throw' and self.current_action != 'hit':
             if keys_pressed[pygame.K_UP] and self.hitbox.y - config.PLAYER_VELOCITY > 0:
                 self._Move_Up()
             if keys_pressed[pygame.K_DOWN] and (self.hitbox.y + config.PLAYER_HEIGHT +
@@ -132,30 +140,56 @@ class Player:
 
             self.Get_Ball(self.dodgeball).Start_Animation()
             self.current_action = 'throw'
-            self.frame = 0
             self.dodgeball = None
 
     def Draw_Player(self):
         current_time = pygame.time.get_ticks()
+        if self.frame >= Player.ACTIONS[self.current_action].Num_Frames(): self.frame = 0
 
         if self.direction == 'RIGHT': image = Player.ACTIONS[self.current_action].Get_Frame('RIGHT', self.frame)
         else: image = Player.ACTIONS[self.current_action].Get_Frame('LEFT', self.frame)
+        if self.current_action == 'hit': 
+            if self.frame % 2 == 0: image.set_alpha(150)
+            else: image.set_alpha(250)
+
         config.WINDOW.blit(image, (self.hitbox.x, self.hitbox.y))
 
-        if self.current_action == 'throw': speed = 100
-        else: speed = config.PLAYER_ANIMATION_SPEED
+        # if self.current_action == 'throw': speed = 100
+        # elif self.current_action == 'hit': speed = 300
+        # else: speed = config.PLAYER_ANIMATION_SPEED
 
-        if current_time - self.last_update >= speed:
-            self.frame += 1
-            self.last_update = current_time
-            if self.frame >= Player.ACTIONS[self.current_action].Num_Frames():
-                if self.current_action == 'throw': self.current_action = 'idle'
-                self.frame = 0
+        # if current_time - self.last_update >= speed:
+        #     self.frame += 1
+        #     self.last_update = current_time
+        #     if self.frame >= Player.ACTIONS[self.current_action].Num_Frames():
+        #         if self.current_action == 'throw' or self.current_action == 'hit': self.current_action = 'idle'
+        #         self.frame = 0
+
+        if self.current_action != 'hit':
+            speed = 100
+            if current_time - self.last_update >= speed:
+                self.frame += 1
+                self.last_update = current_time
+                if self.frame >= Player.ACTIONS[self.current_action].Num_Frames():
+                    if self.current_action == 'throw': self.current_action = 'idle'
+                    self.frame = 0
+        else:
+            speed = 300
+            if current_time - self.last_update >= speed:
+                self.frame += 1
+                self.last_update = current_time
+                if self.frame >= Player.ACTIONS[self.current_action].Num_Frames():
+                    self.doing_hit += 1
+                    self.frame = 0
+                    if self.doing_hit >= 2:
+                        self.current_action = 'idle'
+                        image.set_alpha(250)
 
 def Initialize_Player_Animations():
     Player.ACTIONS['idle'].Set_Frames('RIGHT', Extract_Animation('idle'))
     Player.ACTIONS['run'].Set_Frames('RIGHT', Extract_Animation('run'))
     Player.ACTIONS['throw'].Set_Frames('RIGHT', Extract_Animation('throw'))
+    Player.ACTIONS['hit'].Set_Frames('RIGHT', Extract_Animation('hit'))
 
     rotate_left = lambda frame: pygame.transform.flip(frame, True, False)
     for action in Player.ACTIONS:
