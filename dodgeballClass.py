@@ -88,9 +88,9 @@ class Dodgeball:
             
     def Check_Hit(self, player):
         if self.hitbox.colliderect(player.hitbox):
-            if player.player_section == 'RIGHT':
+            if player.player_section == 'RIGHT' and player.current_action != 'hit':
                 pygame.event.post(pygame.event.Event(config.RIGHT_PLAYER_HIT))
                 self._Delete()
-            elif player.player_section == 'LEFT':
+            elif player.player_section == 'LEFT' and player.current_action != 'hit':
                 pygame.event.post(pygame.event.Event(config.LEFT_PLAYER_HIT))
                 self._Delete()

@@ -37,6 +37,7 @@ class Player:
         self.dodgeball = None       # dodgeball id that the player is holding
         self.ball_list = []
         self.direction = None
+        self.lives = 3
 
         self.frame = 0
         self.last_update = 0
@@ -153,17 +154,6 @@ class Player:
             else: image.set_alpha(250)
 
         config.WINDOW.blit(image, (self.hitbox.x, self.hitbox.y))
-
-        # if self.current_action == 'throw': speed = 100
-        # elif self.current_action == 'hit': speed = 300
-        # else: speed = config.PLAYER_ANIMATION_SPEED
-
-        # if current_time - self.last_update >= speed:
-        #     self.frame += 1
-        #     self.last_update = current_time
-        #     if self.frame >= Player.ACTIONS[self.current_action].Num_Frames():
-        #         if self.current_action == 'throw' or self.current_action == 'hit': self.current_action = 'idle'
-        #         self.frame = 0
 
         if self.current_action != 'hit':
             speed = 100

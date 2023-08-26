@@ -7,13 +7,15 @@ def init():
     global SPAWN_TOP_PADDING, SPAWN_SIDE_PADDING, SPAWN_BETWEEN_BALL_PADDING, BALL_ANIMATION_SPEED
     global PLAYER_SPRITESHEET, PLAYER_SIZE_SCALE, PLAYER_ORIGINAL_WIDTH 
     global PLAYER_ORIGINAL_HEIGHT, IDLE_FRAME_COORDINATES, RUN_FRAME_COORDINATES, THROW_FRAME_COORDINATES
-    global LEFT_PLAYER_HIT, RIGHT_PLAYER_HIT
+    global LEFT_PLAYER_HIT, RIGHT_PLAYER_HIT, LIVES_FONT, WIN_FONT, END_GAME
 
     # window configurations
     WIDTH, HEIGHT = 900, 500
     WINDOW =  pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Dodgeball")
 
+    LIVES_FONT = pygame.font.SysFont('terminal', 35)
+    WIN_FONT = pygame.font.SysFont('comicsans', 100)
     FPS = 60
 
     # background and divider configurations
@@ -62,3 +64,4 @@ def init():
     
     LEFT_PLAYER_HIT = pygame.USEREVENT + 1
     RIGHT_PLAYER_HIT = pygame.USEREVENT + 2
+    END_GAME = pygame.USEREVENT + 3
