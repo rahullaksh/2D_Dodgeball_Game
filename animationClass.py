@@ -1,3 +1,9 @@
+import pygame
+import config
+import math
+
+BLACK = (0, 0, 0)
+
 class Animation:
     def __init__(self, frame_coordinates, frames):
         self.frame_coordinates = frame_coordinates
@@ -27,3 +33,16 @@ class Animation:
     
     def Num_Frames(self):
         return self.frames
+
+
+def Transition_Animation(stage):
+    jump_distance = math.ceil(config.WIDTH / 20)
+    
+    # start transition by covering screen
+    if stage['stage'] == 0:
+        pygame.draw.rect(config.WINDOW, BLACK, pygame.Rect(0, 0, stage['frame'] * jump_distance, config.HEIGHT))
+    # end transition by removing black fill
+    elif stage['stage'] == 1:
+        width = config.WIDTH - stage['frame'] * jump_distance
+        pygame.draw.rect(config.WINDOW, BLACK, pygame.Rect(stage['frame'] * jump_distance, 0, width, 
+                                                           config.HEIGHT)) 
