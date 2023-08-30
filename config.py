@@ -8,6 +8,7 @@ def init():
     global PLAYER_SPRITESHEET, PLAYER_SIZE_SCALE, PLAYER_ORIGINAL_WIDTH 
     global PLAYER_ORIGINAL_HEIGHT, IDLE_FRAME_COORDINATES, RUN_FRAME_COORDINATES, THROW_FRAME_COORDINATES
     global LEFT_PLAYER_HIT, RIGHT_PLAYER_HIT, LIVES_FONT, WIN_FONT, END_GAME, ITERATION, PLAYER_NAME_FONT
+    global WHITE, GREEN, YELLOW, RED, BLUE, ORANGE, BUTTON_BLUE
 
     # window configurations
     WIDTH, HEIGHT = 900, 500
@@ -29,7 +30,14 @@ def init():
 
     # rgb colors
     BLACK = (0, 0, 0)
-
+    GREEN = (138,180,18)
+    WHITE = (255, 255, 255)
+    YELLOW = (255, 255, 0)   
+    RED = (255, 0, 0)
+    BLUE = (0, 0, 255)  
+    BUTTON_BLUE = (54, 149, 243)
+    ORANGE = (255, 153, 0)
+   
     # player configurations
     PLAYER_ORIGINAL_WIDTH, PLAYER_ORIGINAL_HEIGHT = 29, 51
     PLAYER_SIZE_SCALE = 1.5
@@ -64,6 +72,7 @@ def init():
                                ((223, 121), (262, 171))]
     ITERATION = 0
     
+    # user events
     LEFT_PLAYER_HIT = pygame.USEREVENT + 1
     RIGHT_PLAYER_HIT = pygame.USEREVENT + 2
     END_GAME = pygame.USEREVENT + 3

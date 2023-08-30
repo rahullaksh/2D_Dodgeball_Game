@@ -2,16 +2,7 @@ import pygame
 import config
 pygame.font.init()
 
-# button colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-BLUE = (10, 143, 245)
-ORANGE = (255, 153, 0)
-YELLOW = (247, 255, 0)
-
 clicked = False
-
-
 class Button: 
     BUTTON_FONT = pygame.font.SysFont('comicsans', 45)
 
@@ -37,7 +28,7 @@ class Button:
             if pygame.mouse.get_pressed()[0] == 1: 
                 global clicked
                 clicked = True
-                pygame.draw.rect(config.WINDOW, YELLOW, button)
+                pygame.draw.rect(config.WINDOW, config.YELLOW, button)
             # button has been pressed and released
             elif pygame.mouse.get_pressed()[0] == 0 and clicked == True:
                 clicked = False
@@ -45,29 +36,26 @@ class Button:
                 self.disabled = True
             # mouse hover over button
             else: 
-                pygame.draw.rect(config.WINDOW, ORANGE, button)
+                pygame.draw.rect(config.WINDOW, config.ORANGE, button)
         else: 
-            pygame.draw.rect(config.WINDOW, BLUE, button)
+            pygame.draw.rect(config.WINDOW, config.BUTTON_BLUE, button)
 
         # add visual detail to button
-        pygame.draw.line(config.WINDOW, WHITE, (self.x, self.y), (self.x + self.width, self.y), 4)
-        pygame.draw.line(config.WINDOW, WHITE, (self.x, self.y), (self.x, self.y + self.height), 4)
-        pygame.draw.line(config.WINDOW, BLACK, (self.x + self.width, self.y), 
+        pygame.draw.line(config.WINDOW, config.WHITE, (self.x, self.y), (self.x + self.width, self.y), 4)
+        pygame.draw.line(config.WINDOW, config.WHITE, (self.x, self.y), (self.x, self.y + self.height), 4)
+        pygame.draw.line(config.WINDOW, config.BLACK, (self.x + self.width, self.y), 
                          (self.x + self.width, self.y + self.height), 4)
-        pygame.draw.line(config.WINDOW, BLACK, (self.x, self.y + self.height), 
+        pygame.draw.line(config.WINDOW, config.BLACK, (self.x, self.y + self.height), 
                          (self.x + self.width, self.y + self.height), 4)
 
         # draw text onto button
         if self.text == "Back": 
-            text = Button.BUTTON_FONT.render(self.text, True, BLACK)
+            text = Button.BUTTON_FONT.render(self.text, True, config.BLACK)
             text = pygame.transform.scale(text, (50, 30))
         else:
-            text = Button.BUTTON_FONT.render(self.text, True, WHITE)
+            text = Button.BUTTON_FONT.render(self.text, True, config.WHITE)
 
         config.WINDOW.blit(text, (self.x + (self.width - text.get_width()) // 2, 
                                   self.y + (self.height - text.get_height()) // 2))
         
         return pressed
-    
-    def Is_Active(self):
-        return not self.disabled

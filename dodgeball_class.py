@@ -1,7 +1,7 @@
 import config
 import pygame
 import os
-from animationClass import Animation
+from animation_class import Animation
 
 class Dodgeball:
     ANIMATION = Animation([(0, 0)], 4)
